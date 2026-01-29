@@ -2,6 +2,10 @@ import random
 from typing import Any, Dict, List, Optional, Tuple
 
 class Machine:
+    ''' 
+    Represents a single processing resource that can execute operations. 
+    A `Machine` has a name, a release time (availability), and a status. 
+    '''
     def __init__(self, name: str, release: float, status: str) -> None:
         if not isinstance(name, str):
             raise TypeError("name must be a string")
@@ -34,6 +38,10 @@ class Machine:
         }
 
 class Workcenter:
+    ''' 
+    A group of one or more `Machine` instances that compete to process operations. 
+    Each workcenter can have an RGB color for visualization. 
+    '''
     _available_colors: List[Tuple[int, int, int]] = [
         (r, g, b) for r in range(0, 256, 64)
         for g in range(0, 256, 64)
