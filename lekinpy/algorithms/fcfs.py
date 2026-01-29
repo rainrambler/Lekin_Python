@@ -2,6 +2,9 @@ from .base import SchedulingAlgorithm
 from ..schedule import Schedule, MachineSchedule
 
 class FCFSAlgorithm(SchedulingAlgorithm):
+    '''
+    first come first served
+    '''
     def schedule(self, system):
         self.prepare(system)
 
