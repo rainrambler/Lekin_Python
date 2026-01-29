@@ -2,6 +2,9 @@ from .base import SchedulingAlgorithm
 from ..schedule import Schedule
 
 class SPTAlgorithm(SchedulingAlgorithm):
+    '''
+    shortest processing time
+    '''
     def schedule(self, system):
         def spt_selector_function(jobs):
             """
