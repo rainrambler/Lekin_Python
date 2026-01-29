@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Optional, Tuple
 
 class MachineSchedule:
+    ''' Represents the list of jobs assigned to a specific machine within a workcenter. '''
     def __init__(self, workcenter: Optional[str], machine: str, operations: List[str]) -> None:
         self.workcenter: Optional[str] = workcenter
         self.machine: str = machine
@@ -14,6 +15,7 @@ class MachineSchedule:
         }
 
 class Schedule:
+    ''' Represents a full scheduling result across machines, including display and plotting utilities. '''
     def __init__(self, schedule_type: str, time: int, machines: List[MachineSchedule]) -> None:
         self.schedule_type: str = schedule_type
         self.time: int = time
