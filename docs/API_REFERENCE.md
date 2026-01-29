@@ -100,6 +100,7 @@ job2 = Job.from_dict(payload)
 ---
 
 ### Operation
+
 Represents a single operation step of a job: which workcenter it needs, how long it takes, and its status.
 
 **Constructor**
@@ -129,6 +130,7 @@ assert op.processing_time == 5
 ```
 
 ### Machine
+
 Represents a single processing resource that can execute operations. A `Machine` has a name, a release time (availability), and a status.
 
 **Constructor**
@@ -172,6 +174,7 @@ payload = m1.to_dict()  # {"name": "A1", "release": 0.0, "status": "A"}
 
 
 ### Workcenter
+
 A group of one or more `Machine` instances that compete to process operations. Each workcenter can have an RGB color for visualization.
 
 **Constructor**
@@ -228,6 +231,7 @@ wc2 = Workcenter.from_dict(wc_dict)
 ---
 
 ### MachineSchedule
+
 Represents the list of jobs assigned to a specific machine within a workcenter.
 
 **Constructor**
@@ -298,6 +302,7 @@ sched.display_machine_details()
 
 
 ### System
+
 Represents the complete scheduling environment, holding jobs, workcenters, and an optional computed schedule.
 
 **Constructor**
@@ -351,6 +356,7 @@ print(sys.to_dict())
 ## IO Helpers
 
 ### load_jobs_from_json
+
 Load jobs from a JSON file previously saved in `system.to_dict()` format.
 
 **Signature**
@@ -369,6 +375,7 @@ jobs = load_jobs_from_json("jobs.json")
 ---
 
 ### load_workcenters_from_json
+
 Load workcenters from a JSON file.
 
 **Signature**
@@ -387,6 +394,7 @@ wcs = load_workcenters_from_json("workcenters.json")
 ---
 
 ### save_schedule_to_json
+
 Save a `Schedule` object to a JSON file.
 
 **Signature**
@@ -403,6 +411,7 @@ save_schedule_to_json(schedule, "schedule.json")
 ---
 
 ### parse_job_file
+
 Parse a `.job` text file into a list of `Job` objects.
 
 **Signature**
@@ -419,6 +428,7 @@ jobs = parse_job_file("example.job")
 ---
 
 ### parse_mch_file
+
 Parse a `.mch` text file into a list of `Workcenter` objects.
 
 **Signature**
@@ -435,6 +445,7 @@ wcs = parse_mch_file("example.mch")
 ---
 
 ### parse_seq_file
+
 Parse a `.seq` file into a list of serialized schedule dictionaries.
 
 **Signature**
@@ -451,6 +462,7 @@ seqs = parse_seq_file("example.seq")
 ---
 
 ### save_schedule_to_seq
+
 Save a `Schedule` to a `.seq` file.
 
 **Signature**
@@ -467,6 +479,7 @@ save_schedule_to_seq(schedule, "output.seq")
 ---
 
 ### export_jobs_to_jobfile
+
 Export jobs from a `System` to a `.job` file.
 
 **Signature**
@@ -483,6 +496,7 @@ export_jobs_to_jobfile(system, "output.job")
 ---
 
 ### export_workcenters_to_mchfile
+
 Export workcenters from a `System` to a `.mch` file.
 
 **Signature**
@@ -499,6 +513,7 @@ export_workcenters_to_mchfile(system, "output.mch")
 ---
 
 ### export_system_to_json
+
 Export the entire `System` to a JSON file.
 
 **Signature**
@@ -514,6 +529,7 @@ export_system_to_json(system, "system.json")
 ## Algorithms
 
 ### SchedulingAlgorithm (base)
+
 Base class providing common utilities for building scheduling algorithms: mapping machines to workcenters, tracking machine availability, and producing `MachineSchedule` lists.
 
 > Note: Current dynamic engine assumes **single-operation jobs** (uses the first operation of each job). Multi-operation routing will be documented when supported.
@@ -551,7 +567,9 @@ class MyShortestProcessingTime(SchedulingAlgorithm):
 ---
 
 ### FCFSAlgorithm
+
 First-Come, First-Served: among released jobs at the current time, pick the one with the **earliest release time** (ties broken by job_id).
+
 > Implementation note: the current FCFS schedules **all operations of each job in order**. Other dynamic-rule algorithms (SPT/EDD/WSPT) operate on the first operation under a single-operation assumption.
 
 **Signature**
@@ -569,6 +587,7 @@ sched.display_machine_details()
 ---
 
 ### SPTAlgorithm
+
 Shortest Processing Time: among released jobs, pick the smallest `processing_time` of the **first operation**.
 
 **Signature**
@@ -585,6 +604,7 @@ sched = SPTAlgorithm().schedule(system)
 ---
 
 ### EDDAlgorithm
+
 Earliest Due Date: among released jobs, pick the smallest `due`.
 
 **Signature**
@@ -601,6 +621,7 @@ sched = EDDAlgorithm().schedule(system)
 ---
 
 ### WSPTAlgorithm
+
 Weighted Shortest Processing Time: among released jobs, pick the job minimizing `processing_time / weight` for the **first operation** (equivalently, maximizing `weight / processing_time`).
 
 **Signature**
@@ -621,6 +642,7 @@ sched = WSPTAlgorithm().schedule(system)
 You can plug in your own rule by subclassing `SchedulingAlgorithm`. Use the built‑in `dynamic_schedule(...)` helper (single‑operation assumption) or implement your own loop.
 
 ### Minimal Template
+
 ```python
 from lekinpy.algorithms import SchedulingAlgorithm
 from lekinpy.schedule import Schedule
@@ -654,11 +676,13 @@ sys.set_schedule(schedule)
 ```
 
 ### When You Need More Than One Operation per Job
+
 - `dynamic_schedule` currently considers the **first** operation of each job. For multi‑operation routing, either:
   - Use `FCFSAlgorithm` (which executes all operations in order), or
   - Write a custom loop: advance time, track per‑operation readiness, and assign eligible operations to machines.
 
 ### Packaging (Optional)
+
 If you publish your rule inside `lekinpy/algorithms/`, export it via `lekinpy/algorithms/__init__.py` and `lekinpy/__init__.py` so users can do:
 ```python
 from lekinpy.algorithms import MyRule
