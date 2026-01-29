@@ -2,6 +2,7 @@ from .base import SchedulingAlgorithm
 from ..schedule import Schedule
 
 class EDDAlgorithm(SchedulingAlgorithm):
+    ''' earliest due date '''
     def schedule(self, system):
         def edd_selector_function(jobs):
             """
