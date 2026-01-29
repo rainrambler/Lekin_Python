@@ -4,6 +4,7 @@ from .schedule import Schedule
 from typing import Any, Dict, List, Optional
 
 class System:
+    ''' Represents the complete scheduling environment, holding jobs, workcenters, and an optional computed schedule. '''
     def __init__(self) -> None:
         self.jobs: List[Job] = []
         self.workcenters: List[Workcenter] = []
