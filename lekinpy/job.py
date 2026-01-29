@@ -2,6 +2,7 @@ import random
 from typing import Any, Dict, List, Optional, Tuple
 
 class Operation:
+    ''' Represents a single operation step of a job: which workcenter it needs, how long it takes, and its status. '''
     def __init__(self, workcenter: str, processing_time: float, status: str) -> None:
         if not isinstance(workcenter, str):
             raise TypeError("workcenter must be a string")
@@ -17,6 +18,7 @@ class Operation:
         return f"Operation({self.workcenter}, {self.processing_time}, {self.status})"
 
 class Job:
+    ''' Represents a schedulable job composed of one or more operations, with optional visualization color. '''
     _available_colors: List[Tuple[int, int, int]] = [
         (r, g, b) for r in range(0, 256, 64)
         for g in range(0, 256, 64)
@@ -27,9 +29,9 @@ class Job:
     def __init__(
         self,
         job_id: str,
-        release: float,
-        due: float,
-        weight: float,
+        release: float, # Release/ready time.
+        due: float, # Due date/time.
+        weight: float, # Job priority weight used by some algorithms.
         operations: List[Operation],
         rgb: Optional[Tuple[int, int, int]] = None
     ) -> None:
